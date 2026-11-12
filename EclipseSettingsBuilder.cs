@@ -58,7 +58,9 @@ public class EclipseSettingsBuilder : EclipseScreenBase
 
     protected override void BuildContent()
     {
-        ha = HA.Left; va = VA.Top;
+        // Seluruh blok (kategori + isi) dipusatkan, jadi tetap rapi di rasio layar apa pun.
+        // Tombol bawah menempel ke bawah layar; header tetap menempel ke tepi kiri/kanan.
+        ha = HA.Center; va = VA.Top;
         for (int i = 0; i < Cats.Length; i++)
         {
             float y = 113 + i * 83;
@@ -70,6 +72,7 @@ public class EclipseSettingsBuilder : EclipseScreenBase
         }
         content = R(frame, "Content", 305, 112, 1340, 720);
 
+        va = VA.Bottom;
         var rs = Panel(frame, "ResetSettings", 23, 861, 257, 57, Dark, DarkLine);
         Icon(rs, "Icon", iconReset, 55, 874, 34, 34);
         T(rs, "Label", "Reset to Default", 109, 889, 160, 21);
@@ -79,7 +82,6 @@ public class EclipseSettingsBuilder : EclipseScreenBase
         T(pp, "Label", "Privacy Policy", 399, 889, 150, 21);
         Click(pp);
 
-        ha = HA.Right;
         var sv = SlantPlain("SaveSettings", "Save Settings", 1345, 860, 305, 60, 22);
         Icon(sv, "Icon", iconCheck, 1424, 875, 30, 30);
         var svl = sv.Find("SaveSettingsLabel") as RectTransform;
