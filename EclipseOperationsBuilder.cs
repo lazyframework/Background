@@ -121,6 +121,8 @@ public class EclipseOperationsBuilder : EclipseScreenBase
         Img(mp, "ThumbFrame", 56, 757, 272, 115, LineSprite(), new Color(.62f, .63f, .67f, .8f), true);
         mapName = T(mp, "MapName", "", 361, 785, 290, 25);
         mapDesc = TW(mp, "MapDesc", "", 361, 806, 290, 62, 19, Dim);
+        foreach (var g in mp.GetComponentsInChildren<Graphic>(true))
+            g.raycastTarget = false;
         Click(mp);
 
         // ---------------- kesulitan
@@ -133,6 +135,8 @@ public class EclipseOperationsBuilder : EclipseScreenBase
         {
             var b = Panel(frame, "Diff" + k, bx[k], 779, bw[k], 59, new Color(.04f, .042f, .05f, .9f), new Color(.25f, .26f, .29f, .9f), .001f);
             diffLabels[k] = T(b, "Label", DiffNames[k], bx[k], 808, bw[k], 20, false, TextAnchor.MiddleCenter);
+            foreach (var g in b.GetComponentsInChildren<Graphic>(true))
+               g.raycastTarget = false;
             Click(b);
             diffBtns[k] = b;
         }
@@ -156,6 +160,8 @@ public class EclipseOperationsBuilder : EclipseScreenBase
         T(r, "Title", m.title, x + 139, y + 44, 270, 25);
         T(r, "Sub", m.subtitle, x + 139, y + 73, 270, 19, false, TextAnchor.MiddleLeft, false, Dim);
         Chevron(r, "Chev", x + W - 22, y + H / 2f, 12, 3, Txt, 1);
+        foreach (var g in r.GetComponentsInChildren<Graphic>(true))
+           g.raycastTarget = false;
         Click(r);
         modeRows.Add(r);
     }
