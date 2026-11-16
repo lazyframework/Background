@@ -1,0 +1,8 @@
+Tolong buatkan script Unity Editor Window (EclipseWeaponSetupBuilder.cs) yang ditaruh di folder Editor supaya saya bisa auto-setup senjata ke tangan karakter lewat menu bar atas Unity (Eclipse > Weapon & Hand IK Builder), tanpa perlu pasang komponen dan child objek satu per satu secara manual.
+
+Tolong pastikan builder-nya otomatis melakukan hal berikut saat tombol Build / Setup diklik:
+1. Mengambil input referensi Objek Senjata (AUG) dan Root Karakter (Agent 013 / SWAT).
+2. Memastikan EclipseWeapon dan EclipseWeaponMount terpasang di root AUG (dan menghapus EclipseWeapon jika tidak sengaja nempel di child seperti Muzzle).
+3. Membuatkan child Muzzle (jika belum ada) dan LeftHandGrip di dalam AUG, memasang komponen EclipseGripPoint pada LeftHandGrip, lalu otomatis mengisi field Muzzle dan Left Hand Grip pada komponen EclipseWeapon.
+4. Mencari objek dengan komponen Animator di dalam karakter (AgentBody / SWAT), memasang komponen EclipseWeaponHandIK, dan menghubungkan referensi Animator serta EclipseWeaponController-nya secara otomatis.
+5. Menggunakan Undo.RecordObject / SerializedObject agar semua perubahan tersimpan permanen di scene.
