@@ -1,8 +1,27 @@
-Tolong buatkan script Unity Editor Window (EclipseWeaponSetupBuilder.cs) yang ditaruh di folder Editor supaya saya bisa auto-setup senjata ke tangan karakter lewat menu bar atas Unity (Eclipse > Weapon & Hand IK Builder), tanpa perlu pasang komponen dan child objek satu per satu secara manual.
+Tolong buatkan atau perbarui script Unity Editor Window (`EclipseWeaponSetupBuilder.cs`) di dalam folder `Assets/Editor` dengan menu `Eclipse > Auto Setup Weapon & Hand IK` yang langsung menyelesaikan semua masalah setup senjata (`AUG`) ke karakter (`Agent 013` / `SWAT`) dalam sekali klik.
 
-Tolong pastikan builder-nya otomatis melakukan hal berikut saat tombol Build / Setup diklik:
-1. Mengambil input referensi Objek Senjata (AUG) dan Root Karakter (Agent 013 / SWAT).
-2. Memastikan EclipseWeapon dan EclipseWeaponMount terpasang di root AUG (dan menghapus EclipseWeapon jika tidak sengaja nempel di child seperti Muzzle).
-3. Membuatkan child Muzzle (jika belum ada) dan LeftHandGrip di dalam AUG, memasang komponen EclipseGripPoint pada LeftHandGrip, lalu otomatis mengisi field Muzzle dan Left Hand Grip pada komponen EclipseWeapon.
-4. Mencari objek dengan komponen Animator di dalam karakter (AgentBody / SWAT), memasang komponen EclipseWeaponHandIK, dan menghubungkan referensi Animator serta EclipseWeaponController-nya secara otomatis.
-5. Menggunakan Undo.RecordObject / SerializedObject agar semua perubahan tersimpan permanen di scene.
+Pastikan script builder-nya melakukan seluruh tugas berikut secara otomatis dan akurat:
+
+1. **Input Referensi:**
+   - Field `Weapon Object` (GameObject `AUG`).
+   - Field `Character Root` (GameObject `Agent 013` atau `SWAT`).
+
+2. **Pembersihan & Setup Root Senjata (`AUG`):**
+   - Hapus komponen `EclipseWeapon` jika tidak sengaja menempel di child mana pun (seperti `Muzzle`).
+   - Pastikan `EclipseWeapon` dan `EclipseWeaponMount` terpasang di root `AUG`.
+   - Set default skala/rotasi awal pada `EclipseWeaponMount` agar ukuran senjata tidak raksasa atau terlalu kecil saat masuk ke rig Mixamo.
+
+3. **Auto-Deteksi Posisi `Muzzle` (Supaya Efek Tembakan Tidak di Bawah):**
+   - Buat child `Muzzle` di dalam `AUG` (atau gunakan yang sudah ada).
+   - Hitung otomatis batas terluar (`Bounds` dari `MeshRenderer`/`SkinnedMeshRenderer` milik `AUG`) untuk menaruh `Muzzle` tepat di ujung paling depan laras (bukan di `0,0,0` atau di bawah kaki), serta pastikan sumbu `Z` (`forward`) `Muzzle` menghadap lurus ke depan searah laras senjata.
+
+4. **Setup Pegangan Tangan Kiri (`LeftHandGrip`):**
+   - Buat child `LeftHandGrip` di dalam `AUG`, pasang komponen `EclipseGripPoint`, dan posisikan secara otomatis di area depan-bawah badan senjata (sekitar 60% ke arah laras dari titik tengah bounds) sebagai titik awal foregrip.
+   - Hubungkan `Muzzle` ke field `muzzle` dan `LeftHandGrip` ke field `leftHandGrip` pada komponen `EclipseWeapon` menggunakan `SerializedObject`.
+
+5. **Setup IK Tangan Karakter (`EclipseWeaponHandIK`):**
+   - Cari objek yang memiliki komponen `Animator` di dalam `Character Root` (`AgentBody` / `SWAT`).
+   - Pasang komponen `EclipseWeaponHandIK` pada objek ber-Animator tersebut, dan otomatis isi referensi `Animator` serta `EclipseWeaponController`-nya.
+
+6. **Simpan Permanen:**
+   - Gunakan `Undo.RegisterCompleteObjectUndo` dan `EditorUtility.SetDirty` agar semua objek dan komponen yang dibuat tersimpan permanen di Scene tanpa hilang saat Play/Stop.
